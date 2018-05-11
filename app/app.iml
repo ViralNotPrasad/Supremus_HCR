@@ -137,6 +137,7 @@
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-support:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cloudsearch:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cloudhsm:1.10.6@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-v4-21.0.3" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-directory:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cloudformation:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-simpleworkflow:1.10.6@jar" level="project" />
@@ -153,7 +154,6 @@
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cognitosync:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-emr:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-rds:1.10.6@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-annotations:24.0.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-opsworks:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-ssm:1.10.6@jar" level="project" />
@@ -170,6 +170,7 @@
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-redshift:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.5.3@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-annotations:21.0.3@jar" level="project" />
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.4@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-sts:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-efs:1.10.6@jar" level="project" />
@@ -182,7 +183,6 @@
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-sqs:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-datapipeline:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.10.6@jar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.support:support-v4-24.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-elastictranscoder:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-kinesis:1.10.6@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-iam:1.10.6@jar" level="project" />

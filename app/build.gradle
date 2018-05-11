@@ -6,7 +6,6 @@ android {
 
 
 
-
     defaultConfig {
         applicationId "com.scanner.demo"
         minSdkVersion 14
@@ -23,9 +22,11 @@ android {
 }
 
 dependencies {
-    compile project(':scanlibrary')
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.amazonaws:aws-java-sdk:1.10.6'
+    implementation project(':scanlibrary')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:21.0.3'
+    implementation 'com.amazonaws:aws-java-sdk:1.10.6'
     implementation 'org.apache.directory.studio:org.apache.commons.io:2.4'
+    //dsldigh
+
 }

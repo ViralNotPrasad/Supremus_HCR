@@ -22,13 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
-import com.amazonaws.util.IOUtils;
+
 import com.scanlibrary.ScanActivity;
 import com.scanlibrary.ScanConstants;
 
@@ -52,22 +46,20 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//import org.apache.http.HttpEntity;
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.HttpClient;
-//import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.entity.mime.MultipartEntity;
-//import org.apache.http.entity.mime.content.ContentBody;
-//import org.apache.http.entity.mime.content.FileBody;
-//import org.apache.http.entity.mime.content.StringBody;
-//import org.apache.http.impl.client.DefaultHttpClient;
-//import org.apache.http.util.EntityUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.HttpsURLConnection;
 
 import static android.app.PendingIntent.getActivity;
-//import com.amazonaws.mobile.client.AWSMobileClient;
-
 
 public class MainActivity extends ActionBarActivity {
 
@@ -140,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    public void sendServer(View view) throws IOException {
+    public void sendServer(View view)  {
         Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
 
        /* RequestTask rt = new RequestTask();
@@ -184,13 +176,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
     private Bitmap convertByteArrayToBitmap(byte[] data) {
         return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 
-    /** Create a File for saving an image or video */
-    private  File getOutputMediaFile(){
+    /**
+     * Create a File for saving an image or video
+     */
+    private File getOutputMediaFile() {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 //        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
@@ -205,15 +198,15 @@ public class MainActivity extends ActionBarActivity {
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
                 return null;
             }
         }
         // Create a media file name
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm_ss").format(new Date());
         File mediaFile;
-        String mImageName="MI_"+ timeStamp +".jpg";
+        String mImageName = "MI_" + timeStamp + ".jpg";
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
 
         filePath = mediaStorageDir.getPath();
@@ -221,11 +214,11 @@ public class MainActivity extends ActionBarActivity {
 //        image_name_tv.setText(filePath);
 
 //        try {
-            if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("png")) {
-                //FINE
-            } else {
-                //NOT IN REQUIRED FORMAT
-            }
+        if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("png")) {
+            //FINE
+        } else {
+            //NOT IN REQUIRED FORMAT
+        }
 //        }
 //        catch (FileNotFoundException e) {
 //            // TODO Auto-generated catch block
@@ -234,23 +227,8 @@ public class MainActivity extends ActionBarActivity {
         return mediaFile;
     }
 
-    String imageName = filePath + file_extn ;
+    String imageName = filePath + file_extn;
 
-    WebserviceAmazon amazon = new WebserviceAmazon(/*getActivity()*/, imageName, "", 2);
-    amazon.result(new WebserviceAmazon.WebServiceInterface<String, String>() {
-        @Override
-        public void success(String reslut) {
-
-        }
-
-        @Override
-        public void error(String Error) {
-
-        }
-    });
-
-    return totalPoints;
-}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -274,195 +252,118 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class WebserviceAmazon extends AsyncTask<Void, Void, Void> {
-        private String mParams;
-        private String mResult = "x";
-        WebServiceInterface<String, String> mInterface;
-        private int mRequestType;
-        private  String UserId;
-        private Context mContext;
-
-
-        public WebserviceAmazon(Context context,String imagePath,String AppId,int type) {
-            this.mContext = context;
-            this.mParams = imagePath;
-            this.mRequestType = type;
-            this.UserId = AppId;
-        }
-
-        public void result(WebServiceInterface<String, String> myInterface) {
-            this.mInterface = myInterface;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            String ACCESS_KEY ="abc..";
-            String SECRET_KEY = "klm...";
-
-            try {
-                if (mRequestType == 1) { // POST
-                    AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY));
-                    ////////////////////////sdfsdfdsfsdfdsfdsfdsfdsfdsf
-                    PutObjectRequest request = new PutObjectRequest("bucketName", "imageName", new File(mParams));
-                    s3Client.putObject(request);
-
-                    mResult = "success";
-                } if (mRequestType == 2) { // For get image data
-                    AmazonS3Client s3Client = new AmazonS3Client(new BasicAWSCredentials(ACCESS_KEY, SECRET_KEY));
-                    S3Object object = s3Client.getObject(new GetObjectRequest("bucketName", mParams));
-                    S3ObjectInputStream objectContent = object.getObjectContent();
-                    byte[] byteArray = IOUtils.toByteArray(objectContent);
-
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
-
-
-                    mResult = "success";
-                }
-
-            } catch (Exception e) {
-                mResult = e.toString();
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            mInterface.success(this.mResult);
-
-        }
-
-        public interface WebServiceInterface<E, R> {
-            public void success(E reslut);
-
-            public void error(R Error);
-        }
-
-    }
-
-    /*public class RequestTask extends AsyncTask<String, String, String> {
+    class RequestTask extends AsyncTask<String, String, String> {
 
         @Override
         public String doInBackground(String... uri) {
-            //String responseString = null;
+            String responseString = null;
             //return uploadFile();
 
 
-//            try {
-//                URL url = new URL("http://httpbin.org/ip");
-//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//
-//                Log.i("conn.toString()", conn.toString());
-//                if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-//                    Log.i("IN BG w ResponseCode", conn.getResponseMessage());
-//                    Log.i("Input Stream", conn.getInputStream().toString());
-//
-//                    //Log.i("Output Stream", conn.getOutputStream().toString());
-//
-//                    InputStream responseBody = conn.getInputStream();
-//                    InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
-//                    JsonReader jsonReader = new JsonReader(responseBodyReader);
-//
-//                    //Log.i("JSON READ?", jsonReader.toString() );
-//
-//                    jsonReader.beginObject(); // Start processing the JSON object
-//                    while (jsonReader.hasNext()) { // Loop through all keys
-//                        String key = jsonReader.nextName(); // Fetch the next key
-//                        if (key.equals("origin")) { // Check if desired key
-//                            // Fetch the value as a String
-//                            String value = jsonReader.nextString(); //*****************************BOOLEAN NOT ALWAYS A STRING
-//                            Log.i("Placehholder",value);
-//                                // Do something with the value
-//                            break; // Break out of the loop
-//                        } else {
-//                            jsonReader.skipValue(); // Skip values of other keys
-//                            //String value = jsonReader.nextString();
-//                            //Log.i("Placehholder",value);
-//                        }
-//                    }
-//                } else {
-//                    responseString = "FAILED"; // See documentation for more info on response handling
-//                    Log.i("BACKGROUND MEIN", "NAHI HUA");
-//                }
-//                conn.disconnect();
-//            } catch (ClientProtocolException e) {
-//                Log.i("BACKGROUND MEIN", "ClientProtocolException");
-//                //TODO Handle problems..
-//            } catch (IOException e) {
-//                Log.i("BACKGROUND MEIN", "IOException");
-//                //TODO Handle problems..
-//            }
+            try {
+                URL url = new URL("http://httpbin.org/ip");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+                Log.i("conn.toString()", conn.toString());
+                if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+                    Log.i("IN BG w ResponseCode", conn.getResponseMessage());
+                    Log.i("Input Stream", conn.getInputStream().toString());
+
+                    //Log.i("Output Stream", conn.getOutputStream().toString());
+
+                    InputStream responseBody = conn.getInputStream();
+                    InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
+                    JsonReader jsonReader = new JsonReader(responseBodyReader);
+
+                    //Log.i("JSON READ?", jsonReader.toString() );
+
+                    jsonReader.beginObject(); // Start processing the JSON object
+                    while (jsonReader.hasNext()) { // Loop through all keys
+                        String key = jsonReader.nextName(); // Fetch the next key
+                        if (key.equals("origin")) { // Check if desired key
+                            // Fetch the value as a String
+                            String value = jsonReader.nextString(); //*****************************BOOLEAN NOT ALWAYS A STRING
+                            Log.i("Placehholder",value);
+                                // Do something with the value
+                            break; // Break out of the loop
+                        } else {
+                            jsonReader.skipValue(); // Skip values of other keys
+                            //String value = jsonReader.nextString();
+                            //Log.i("Placehholder",value);
+                        }
+                    }
+                } else {
+                    responseString = "FAILED"; // See documentation for more info on response handling
+                    Log.i("BACKGROUND MEIN", "NAHI HUA");
+                }
+                conn.disconnect();
+            } catch (ClientProtocolException e) {
+                Log.i("BACKGROUND MEIN", "ClientProtocolException");
+                //TODO Handle problems..
+            } catch (IOException e) {
+                Log.i("BACKGROUND MEIN", "IOException");
+                //TODO Handle problems..
+            }
             return "Executed";
         }
 
-//        private String uploadFile() {
-//            String responseString = null;
-//            Log.d("Log", "File path" + opFilePath);
-//            HttpClient httpclient = new DefaultHttpClient();
-//            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
-//            try {
-//                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-//                        new AndroidMultiPartEntity.ProgressListener() {
-//
-//                            @Override
-//                            public void transferred(long num) {
-//                                publishProgress((int) ((num / (float) totalSize) * 100));
-//                            }
-//                        });
-//                ExifInterface newIntef = new ExifInterface(opFilePath);
-//                newIntef.setAttribute(ExifInterface.TAG_ORIENTATION,String.valueOf(2));
-//                File file = new File(opFilePath);
-//                entity.addPart("pic", new FileBody(file));
-//                totalSize = entity.getContentLength();
-//                httppost.setEntity(entity);
-//
-//                // Making server call
-//                HttpResponse response = httpclient.execute(httppost);
-//                HttpEntity r_entity = response.getEntity();
-//
-//
-//                int statusCode = response.getStatusLine().getStatusCode();
-//                if (statusCode == 200) {
-//                    // Server response
-//                    responseString = EntityUtils.toString(r_entity);
-//                    Log.d("Log", responseString);
-//                } else {
-//                    responseString = "Error occurred! Http Status Code: "
-//                            + statusCode + " -> " + response.getStatusLine().getReasonPhrase();
-//                    Log.d("Log", responseString);
-//                }
-//
-//            } catch (ClientProtocolException e) {
-//                responseString = e.toString();
-//            } catch (IOException e) {
-//                responseString = e.toString();
-//            }
-//
-//            return responseString;
-//        }
+        private String uploadFile() {
+            String responseString = null;
+            Log.d("Log", "File path" + opFilePath);
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+            try {
+                MultiPartBody
+                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+                        new AndroidMultiPartEntity.ProgressListener() {
+
+                            @Override
+                            public void transferred(long num) {
+                                publishProgress((int) ((num / (float) totalSize) * 100));
+                            }
+                        });
+                ExifInterface newIntef = new ExifInterface(opFilePath);
+                newIntef.setAttribute(ExifInterface.TAG_ORIENTATION,String.valueOf(2));
+                File file = new File(opFilePath);
+                entity.addPart("pic", new FileBody(file));
+                totalSize = entity.getContentLength();
+                httppost.setEntity(entity);
+
+                // Making server call
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity r_entity = response.getEntity();
+
+
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode == 200) {
+                    // Server response
+                    responseString = EntityUtils.toString(r_entity);
+                    Log.d("Log", responseString);
+                } else {
+                    responseString = "Error occurred! Http Status Code: "
+                            + statusCode + " -> " + response.getStatusLine().getReasonPhrase();
+                    Log.d("Log", responseString);
+                }
+
+            } catch (ClientProtocolException e) {
+                responseString = e.toString();
+            } catch (IOException e) {
+                responseString = e.toString();
+            }
+
+            return responseString;
+        }
 
 
         @Override
-        protected void onPreExecute() {}
+        protected void onPreExecute() {
+        }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             //Do anything with response..
         }
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    }*/
+    }
 }
-
 
