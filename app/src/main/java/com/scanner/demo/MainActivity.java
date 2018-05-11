@@ -46,14 +46,25 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ContentBody;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
+//import org.apache.http.entity.mime.MultipartEntity;
+//import org.apache.http.entity.mime.content.ContentBody;
+//import org.apache.http.entity.mime.content.FileBody;
+//import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
@@ -61,7 +72,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 import static android.app.PendingIntent.getActivity;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
     private static final int REQUEST_CODE = 99;
     private Button scanButton;
@@ -73,6 +84,8 @@ public class MainActivity extends ActionBarActivity {
     public String filePath;
     public String file_extn;
 
+    Service service;
+
     final String httpPath = "http://www.edumobile.org/android/";
 
     @Override
@@ -80,18 +93,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-//        RequestTask rt = new RequestTask();
-//        Test= rt.doInBackground();
-//        HttpClient httpClient = new DefaultHttpClient();
-//        HttpGet httpGet = new HttpGet(httpPath);
-//
-//        try{
-//            HttpEntity httpEntity = httpClient.execute(httpGet).getEntity();
-//            if (httpEntity!=null){
-//                InputStream inputStream = httpEntity.getContent();
-//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader())
-//            }
-//        }
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        // Change base URL to your upload server URL.
+        service = new Retrofit.Builder().baseUrl("http://bin.org").client(client).build().create(Service.class);
 
     }
 
@@ -106,7 +114,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         //sendButton = (Button) findViewById(R.id.sendButton);
-        //sendButton.setOnClickListener(new ScanButtonClickListener());
+        //sendButton.setOnClickListener(new ***Scan****ButtonClickListener());
     }
 
     private class ScanButtonClickListener implements View.OnClickListener {
@@ -130,21 +138,6 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, ScanActivity.class);
         intent.putExtra(ScanConstants.OPEN_INTENT_PREFERENCE, preference);
         startActivityForResult(intent, REQUEST_CODE);
-    }
-
-    public void sendServer(View view)  {
-        Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
-
-       /* RequestTask rt = new RequestTask();
-        //Test = rt.doInBackground();
-        rt.execute();
-        Log.i("DIB called on", "Scan Click");
-        */
-
-//        RequestTask rt = new RequestTask();
-//        Test= rt.doInBackground();
-//        Log.i("DIB called on", "Scan Click");
-
     }
 
     @Override
@@ -213,21 +206,37 @@ public class MainActivity extends ActionBarActivity {
         file_extn = "jpg";
 //        image_name_tv.setText(filePath);
 
-//        try {
-        if (file_extn.equals("img") || file_extn.equals("jpg") || file_extn.equals("jpeg") || file_extn.equals("png")) {
-            //FINE
-        } else {
-            //NOT IN REQUIRED FORMAT
-        }
-//        }
-//        catch (FileNotFoundException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
+        Log.i("*****FE****",filePath+"."+file_extn);
+
         return mediaFile;
     }
 
     String imageName = filePath + file_extn;
+
+    public void sendServer(View view)  {
+        Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
+        File file = new File(imageName);
+        Log.i("FILE NAME", imageName);
+
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+        RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+
+        retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
+        req.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                // Do Something
+                Log.i("HO GYA", "Coming from onRespCall");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                Log.i("NAHI HUA", "Coming from onFailiure");
+            }
+        });
+    }
 
 
     @Override
@@ -257,102 +266,124 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public String doInBackground(String... uri) {
             String responseString = null;
+
+//            File file = new File(imageName);
+//            Log.i("FILE NAME", "PASS HUA");
+//
+//            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+//            MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
+//            RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
+//
+//            retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
+//            req.enqueue(new Callback<ResponseBody>() {
+//                @Override
+//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                    // Do Something
+//                    Log.i("HO GYA", "Coming from onRespCall");
+//                }
+//
+//                @Override
+//                public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                    t.printStackTrace();
+//                    Log.i("NAHI HUA", "Coming from onFailiure");
+//                }
+//            });
+
             //return uploadFile();
 
 
-            try {
-                URL url = new URL("http://httpbin.org/ip");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-                Log.i("conn.toString()", conn.toString());
-                if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
-                    Log.i("IN BG w ResponseCode", conn.getResponseMessage());
-                    Log.i("Input Stream", conn.getInputStream().toString());
-
-                    //Log.i("Output Stream", conn.getOutputStream().toString());
-
-                    InputStream responseBody = conn.getInputStream();
-                    InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
-                    JsonReader jsonReader = new JsonReader(responseBodyReader);
-
-                    //Log.i("JSON READ?", jsonReader.toString() );
-
-                    jsonReader.beginObject(); // Start processing the JSON object
-                    while (jsonReader.hasNext()) { // Loop through all keys
-                        String key = jsonReader.nextName(); // Fetch the next key
-                        if (key.equals("origin")) { // Check if desired key
-                            // Fetch the value as a String
-                            String value = jsonReader.nextString(); //*****************************BOOLEAN NOT ALWAYS A STRING
-                            Log.i("Placehholder",value);
-                                // Do something with the value
-                            break; // Break out of the loop
-                        } else {
-                            jsonReader.skipValue(); // Skip values of other keys
-                            //String value = jsonReader.nextString();
-                            //Log.i("Placehholder",value);
-                        }
-                    }
-                } else {
-                    responseString = "FAILED"; // See documentation for more info on response handling
-                    Log.i("BACKGROUND MEIN", "NAHI HUA");
-                }
-                conn.disconnect();
-            } catch (ClientProtocolException e) {
-                Log.i("BACKGROUND MEIN", "ClientProtocolException");
-                //TODO Handle problems..
-            } catch (IOException e) {
-                Log.i("BACKGROUND MEIN", "IOException");
-                //TODO Handle problems..
-            }
+//            try {
+//                URL url = new URL("http://httpbin.org/ip");
+//                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//
+//                Log.i("conn.toString()", conn.toString());
+//                if (conn.getResponseCode() == HttpsURLConnection.HTTP_OK) {
+//                    Log.i("IN BG w ResponseCode", conn.getResponseMessage());
+//                    Log.i("Input Stream", conn.getInputStream().toString());
+//
+//                    //Log.i("Output Stream", conn.getOutputStream().toString());
+//
+//                    InputStream responseBody = conn.getInputStream();
+//                    InputStreamReader responseBodyReader = new InputStreamReader(responseBody, "UTF-8");
+//                    JsonReader jsonReader = new JsonReader(responseBodyReader);
+//
+//                    //Log.i("JSON READ?", jsonReader.toString() );
+//
+//                    jsonReader.beginObject(); // Start processing the JSON object
+//                    while (jsonReader.hasNext()) { // Loop through all keys
+//                        String key = jsonReader.nextName(); // Fetch the next key
+//                        if (key.equals("origin")) { // Check if desired key
+//                            // Fetch the value as a String
+//                            String value = jsonReader.nextString(); //*****************************BOOLEAN NOT ALWAYS A STRING
+//                            Log.i("Placehholder",value);
+//                                // Do something with the value
+//                            break; // Break out of the loop
+//                        } else {
+//                            jsonReader.skipValue(); // Skip values of other keys
+//
+//                        }
+//                    }
+//                } else {
+//                    responseString = "FAILED"; // See documentation for more info on response handling
+//                    Log.i("BACKGROUND MEIN", "NAHI HUA");
+//                }
+//                conn.disconnect();
+//            } catch (ClientProtocolException e) {
+//                Log.i("BACKGROUND MEIN", "ClientProtocolException");
+//                //TODO Handle problems..
+//            } catch (IOException e) {
+//                Log.i("BACKGROUND MEIN", "IOException");
+//                //TODO Handle problems..
+//            }
             return "Executed";
         }
 
-        private String uploadFile() {
-            String responseString = null;
-            Log.d("Log", "File path" + opFilePath);
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
-            try {
-                MultiPartBody
-                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
-                        new AndroidMultiPartEntity.ProgressListener() {
-
-                            @Override
-                            public void transferred(long num) {
-                                publishProgress((int) ((num / (float) totalSize) * 100));
-                            }
-                        });
-                ExifInterface newIntef = new ExifInterface(opFilePath);
-                newIntef.setAttribute(ExifInterface.TAG_ORIENTATION,String.valueOf(2));
-                File file = new File(opFilePath);
-                entity.addPart("pic", new FileBody(file));
-                totalSize = entity.getContentLength();
-                httppost.setEntity(entity);
-
-                // Making server call
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity r_entity = response.getEntity();
-
-
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == 200) {
-                    // Server response
-                    responseString = EntityUtils.toString(r_entity);
-                    Log.d("Log", responseString);
-                } else {
-                    responseString = "Error occurred! Http Status Code: "
-                            + statusCode + " -> " + response.getStatusLine().getReasonPhrase();
-                    Log.d("Log", responseString);
-                }
-
-            } catch (ClientProtocolException e) {
-                responseString = e.toString();
-            } catch (IOException e) {
-                responseString = e.toString();
-            }
-
-            return responseString;
-        }
+//        private String uploadFile() {
+//            String responseString = null;
+//            Log.d("Log", "File path" + opFilePath);
+//            HttpClient httpclient = new DefaultHttpClient();
+//            HttpPost httppost = new HttpPost(Config.FILE_UPLOAD_URL);
+//            try {
+//                MultiPartBody
+//                AndroidMultiPartEntity entity = new AndroidMultiPartEntity(
+//                        new AndroidMultiPartEntity.ProgressListener() {
+//
+//                            @Override
+//                            public void transferred(long num) {
+//                                publishProgress((int) ((num / (float) totalSize) * 100));
+//                            }
+//                        });
+//                ExifInterface newIntef = new ExifInterface(opFilePath);
+//                newIntef.setAttribute(ExifInterface.TAG_ORIENTATION,String.valueOf(2));
+//                File file = new File(opFilePath);
+//                entity.addPart("pic", new FileBody(file));
+//                totalSize = entity.getContentLength();
+//                httppost.setEntity(entity);
+//
+//                // Making server call
+//                HttpResponse response = httpclient.execute(httppost);
+//                HttpEntity r_entity = response.getEntity();
+//
+//
+//                int statusCode = response.getStatusLine().getStatusCode();
+//                if (statusCode == 200) {
+//                    // Server response
+//                    responseString = EntityUtils.toString(r_entity);
+//                    Log.d("Log", responseString);
+//                } else {
+//                    responseString = "Error occurred! Http Status Code: "
+//                            + statusCode + " -> " + response.getStatusLine().getReasonPhrase();
+//                    Log.d("Log", responseString);
+//                }
+//
+//            } catch (ClientProtocolException e) {
+//                responseString = e.toString();
+//            } catch (IOException e) {
+//                responseString = e.toString();
+//            }
+//
+//            return responseString;
+//        }
 
 
         @Override
@@ -366,4 +397,5 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 }
+
 
