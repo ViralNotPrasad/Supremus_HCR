@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/home/viral/.android/build-cache/06b48e0ed6643fdac6b3b7d37b43502e93df310b/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/pre-dexed/debug/classes_81d88d84d9f99a322c4684ea7ff4ed63bdd25610.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/viral/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/24.0.0/support-annotations-24.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/pre-dexed/debug/support-annotations-24.0.0_e0dfb19168d553eec86433eea9d355ec43481540.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/viral/Android Studio Projects/ScanDemoExample/scanlibrary/build/intermediates/bundles/default/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e4e29f4e87068452b8e01f0aee20be6ecdd4b845">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/pre-dexed/debug/classes_669e2ad107b2cf62fa21e15df01dcc4d65289f56.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/viral/.android/build-cache/34e8608e34c753f0240247564c21f76423c14aaf/output/jars/classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/pre-dexed/debug/classes_2adfba39fe6c7e3a784ce7b09a6db4f7c73a1238.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_dbc95706abfc09b555073984a4ea5ff773a3c703/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e80691fe4835f0af44cf22fee8bc6d34ddb01901">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e2914665bf2db1beb38fe8d326570a00117c22c8/classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/home/viral/.android/build-cache/06b48e0ed6643fdac6b3b7d37b43502e93df310b/output/jars/libs/internal_impl-24.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
+        <dex dex="/home/viral/Android Studio Projects/ScanDemoExample/app/build/intermediates/pre-dexed/debug/internal_impl-24.0.0_14dbb704ae29d609c9e0c90e303af2f88c42b6a5.jar" />
+    </item>
+
+</items>
