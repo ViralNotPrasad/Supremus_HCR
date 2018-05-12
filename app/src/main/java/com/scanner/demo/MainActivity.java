@@ -83,6 +83,7 @@ public class MainActivity extends ActionBarActivity{
     private String Test;
     public String filePath;
     public String file_extn;
+    public String imageName;
 
     Service service;
 
@@ -99,7 +100,7 @@ public class MainActivity extends ActionBarActivity{
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         // Change base URL to your upload server URL.
-        service = new Retrofit.Builder().baseUrl("http://bin.org").client(client).build().create(Service.class);
+        service = new Retrofit.Builder().baseUrl("http://35.200.214.70:5000/").client(client).build().create(Service.class);
 
     }
 
@@ -200,23 +201,27 @@ public class MainActivity extends ActionBarActivity{
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm_ss").format(new Date());
         File mediaFile;
         String mImageName = "MI_" + timeStamp + ".jpg";
+        //Log.i("Img Name",mImageName);
+
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + mImageName);
 
-        filePath = mediaStorageDir.getPath();
+        //filePath = mediaStorageDir.getPath();
+        filePath = mediaStorageDir.getPath() + File.separator + mImageName;
+        //Log.i("*****FE****",filePath);
         file_extn = "jpg";
-//        image_name_tv.setText(filePath);
-
-        Log.i("*****FE****",filePath+"."+file_extn);
-
+        imageName = filePath;
+        //Log.i("*****FE****",filePath+"."+file_extn);
         return mediaFile;
     }
 
-    String imageName = filePath + file_extn;
+        //String imageName = filePath + file_extn;
+        //public String imageName = filePath;
+        //Log.i("*****imageNAme****",imageName);
 
     public void sendServer(View view)  {
-        Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
         File file = new File(imageName);
-        Log.i("FILE NAME", imageName);
+        Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
+        Log.i("***FILE NAME", imageName);
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
