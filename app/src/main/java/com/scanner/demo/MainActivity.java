@@ -67,6 +67,7 @@ import org.apache.http.client.methods.HttpPost;
 //import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -231,7 +232,21 @@ public class MainActivity extends ActionBarActivity{
         req.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                // Do Something
+
+                ResponseBody rBody = response.body();
+                String temp = response.toString();
+                Log.i("Ye aya",temp);
+
+
+                /*// Convert String to json object
+                JSONObject json = new JSONObject(response);
+
+                // get LL json object
+                JSONObject json_LL = json.getJSONObject("LL");
+
+                // get value from LL Json Object
+                String str_value=json_LL.getString("value"); //<< get value here*/
+
                 Log.i("HO GYA", "Coming from onRespCall");
             }
 
