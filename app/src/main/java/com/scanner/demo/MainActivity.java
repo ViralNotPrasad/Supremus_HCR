@@ -238,7 +238,7 @@ public class MainActivity extends ActionBarActivity{
                 Log.i("Ye aya",temp);
 
 
-                /*// Convert String to json object
+                /*/ Convert String to json object
                 JSONObject json = new JSONObject(response);
 
                 // get LL json object
