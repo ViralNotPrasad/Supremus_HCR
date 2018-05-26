@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -87,7 +88,8 @@ public class MainActivity extends ActionBarActivity{
     public String filePath;
     public String file_extn;
     public String imageName;
-    TextView test;
+//    TextView test;
+    EditText test2;
     Service service;
 
     final String httpPath = "http://www.edumobile.org/android/";
@@ -267,9 +269,11 @@ public class MainActivity extends ActionBarActivity{
                     Log.i("JSON Exception",e.toString());
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
-                test = (TextView)findViewById(R.id.textView);
-                test.setText(result);
+                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
+                test2=(EditText)findViewById(R.id.editText);
+                test2.setText(result);
+//                test = (TextView)findViewById(R.id.textView);
+//                test.setText(result);
                 Log.i("HO GYA", "Coming from onRespCall");
             }
 
