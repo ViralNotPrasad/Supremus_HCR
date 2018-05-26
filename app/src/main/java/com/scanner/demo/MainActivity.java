@@ -1,5 +1,5 @@
 package com.scanner.demo;
-
+//ye wala latest hai. Add text view
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.scanlibrary.ScanActivity;
@@ -67,6 +68,7 @@ import org.apache.http.client.methods.HttpPost;
 //import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -101,7 +103,7 @@ public class MainActivity extends ActionBarActivity{
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         // Change base URL to your upload server URL.
-        service = new Retrofit.Builder().baseUrl("http://35.200.214.70:5000/").client(client).build().create(Service.class);
+        service = new Retrofit.Builder().baseUrl("http://35.200.202.208:5000/").client(client).build().create(Service.class);
 
     }
 
@@ -115,8 +117,8 @@ public class MainActivity extends ActionBarActivity{
         scannedImageView = (ImageView) findViewById(R.id.scannedImage);
 
 
-        //sendButton = (Button) findViewById(R.id.sendButton);
-        //sendButton.setOnClickListener(new ***Scan****ButtonClickListener());
+//        sendButton = (Button) findViewById(R.id.sendButton);
+//        sendButton.setOnClickListener(new ScanButtonClickListener());
     }
 
     private class ScanButtonClickListener implements View.OnClickListener {
@@ -229,24 +231,43 @@ public class MainActivity extends ActionBarActivity{
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
         retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
-        req.enqueue(new Callback<ResponseBody>() {
+        Log.i("*****1","1111111");
+        req.enqueue(new Callback<ResponseBody>(){
+//            Log.i("*****1","2");
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 ResponseBody rBody = response.body();
-                String temp = response.toString();
-                Log.i("Ye aya",temp);
+//                String temp = response.toString();
+//                Log.i("Ye aya",temp);
+                String result="bakwaaaaaaaas";
+                try {
+                    result= response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // Convert String to json object
+                JSONObject jsonResponse = null;
+                try {
+                    jsonResponse = new JSONObject(result);
 
 
-                /*/ Convert String to json object
-                JSONObject json = new JSONObject(response);
+                    // get LL json object
+                    //JSONObject json_LL = json.getJSONObject("transcription");
+                    Log.i("***transcription***",jsonResponse.getString("transcription"));
+                    result = jsonResponse.getString("transcription");
 
-                // get LL json object
-                JSONObject json_LL = json.getJSONObject("LL");
 
-                // get value from LL Json Object
-                String str_value=json_LL.getString("value"); //<< get value here*/
 
+                    // get value from LL Json Object
+                    //String str_value=json_LL.getString("transcr"); //<< get value here*/
+
+                } catch (JSONException e) {
+                    Log.i("JSON Exception",e.toString());
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
                 Log.i("HO GYA", "Coming from onRespCall");
             }
 
