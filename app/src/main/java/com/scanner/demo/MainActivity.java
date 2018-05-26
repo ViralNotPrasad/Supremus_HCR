@@ -87,7 +87,7 @@ public class MainActivity extends ActionBarActivity{
     public String filePath;
     public String file_extn;
     public String imageName;
-
+    TextView test;
     Service service;
 
     final String httpPath = "http://www.edumobile.org/android/";
@@ -268,6 +268,8 @@ public class MainActivity extends ActionBarActivity{
                     e.printStackTrace();
                 }
                 Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+                test = (TextView)findViewById(R.id.textView);
+                test.setText(result);
                 Log.i("HO GYA", "Coming from onRespCall");
             }
 
