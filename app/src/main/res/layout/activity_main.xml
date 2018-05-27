@@ -16,18 +16,18 @@
         android:layout_height="297dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="141dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentBottom="true">
+        <!--android:layout_alignParentStart="true">-->
 
         <Button
             android:id="@+id/cameraButton"
-            style="@android:style/Widget.Button"
+            style=""
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
 
         <Button
             android:id="@+id/mediaButton"
-            style="@android:style/Widget.Button"
+            style=""
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -48,7 +48,7 @@
 
         <Button
             android:id="@+id/sendButton"
-            style="@android:style/Widget.Button"
+            style=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/linearLayout"
@@ -60,7 +60,7 @@
 
         <Button
             android:id="@+id/scanButton"
-            style="@android:style/Widget.Button"
+            style=""
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -86,9 +86,9 @@
         android:id="@+id/editText"
         android:layout_width="345dp"
         android:layout_height="73dp"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="82dp"
+        android:layout_marginTop="28dp"
         android:autoText="true"
         android:background="?attr/colorSwitchThumbNormal"
         android:cursorVisible="true"
