@@ -269,7 +269,6 @@ public class MainActivity extends ActionBarActivity{
                     Log.i("JSON Exception",e.toString());
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(),result,Toast.LENGTH_SHORT).show();
                 test2=(EditText)findViewById(R.id.editText);
                 test2.setText(result);
 //                test = (TextView)findViewById(R.id.textView);
@@ -280,6 +279,7 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
+                Toast.makeText(getApplicationContext(),"Please check your network connection",Toast.LENGTH_SHORT).show();
                 Log.i("NAHI HUA", "Coming from onFailiure");
             }
         });
