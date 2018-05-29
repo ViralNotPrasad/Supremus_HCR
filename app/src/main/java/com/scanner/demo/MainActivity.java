@@ -1,6 +1,8 @@
 package com.scanner.demo;
 //ye wala latest hai. Add text view
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -274,6 +276,10 @@ public class MainActivity extends ActionBarActivity{
 //                test = (TextView)findViewById(R.id.textView);
 //                test.setText(result);
                 Log.i("HO GYA", "Coming from onRespCall");
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("transcription",result);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(getApplicationContext(),"Text has been copied to clipboard",Toast.LENGTH_SHORT).show();
             }
 
             @Override
