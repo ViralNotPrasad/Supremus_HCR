@@ -246,9 +246,9 @@ public class MainActivity extends ActionBarActivity{
         final ProgressDialog progressDoalog;
         progressDoalog = new ProgressDialog(MainActivity.this);
         progressDoalog.setMax(100);
-        progressDoalog.setMessage("Its loading....");
-        progressDoalog.setTitle("ProgressDialog bar example");
-        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDoalog.setMessage("Reading");
+//        progressDoalog.setTitle("ProgressDialog bar example");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);

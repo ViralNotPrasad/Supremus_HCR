@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
-            android:label="TEXTRACT" >
+            android:label="Textract" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
