@@ -8,6 +8,8 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -228,6 +230,13 @@ public class MainActivity extends ActionBarActivity{
         //public String imageName = filePath;
         //Log.i("*****imageNAme****",imageName);
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void sendServer(View view)  {
         File file = new File(imageName);
         Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
@@ -245,6 +254,8 @@ public class MainActivity extends ActionBarActivity{
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 ResponseBody rBody = response.body();
+                if(response.code()==200)
+                {
 //                String temp = response.toString();
 //                Log.i("Ye aya",temp);
                 String result="bakwaaaaaaaas";
@@ -262,8 +273,9 @@ public class MainActivity extends ActionBarActivity{
 
                     // get LL json object
                     //JSONObject json_LL = json.getJSONObject("transcription");
-                    Log.i("***transcription***",jsonResponse.getString("transcription"));
+                    Log.i("***transcription***", jsonResponse.getString("transcription"));
                     result = jsonResponse.getString("transcription");
+
 
 
 
@@ -283,12 +295,21 @@ public class MainActivity extends ActionBarActivity{
                 ClipData clip = ClipData.newPlainText("transcription",result);
                 clipboard.setPrimaryClip(clip);
                 Toast.makeText(getApplicationContext(),"Text has been copied to clipboard",Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"Server temporarily down (Error Maintenance)",Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
-                Toast.makeText(getApplicationContext(),"Please check your network connection",Toast.LENGTH_SHORT).show();
+                if(isNetworkAvailable()==false)
+                    Toast.makeText(getApplicationContext(),"Please connect to the internet",Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(),"Please check your connection to the server (Server temporarily down)",Toast.LENGTH_SHORT).show();
+
                 Log.i("NAHI HUA", "Coming from onFailiure");
             }
         });
