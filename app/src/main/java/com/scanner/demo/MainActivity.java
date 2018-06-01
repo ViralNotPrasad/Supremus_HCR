@@ -97,8 +97,7 @@ public class MainActivity extends ActionBarActivity{
 //    TextView test;
     EditText test2;
     Service service;
-
-    final String httpPath = "http://www.edumobile.org/android/";
+//    final String httpPath = "http://www.edumobile.org/android/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
