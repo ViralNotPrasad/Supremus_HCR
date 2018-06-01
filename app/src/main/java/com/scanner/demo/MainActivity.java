@@ -1,6 +1,7 @@
 package com.scanner.demo;
 //ye wala latest hai. Add text view
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -242,12 +243,24 @@ public class MainActivity extends ActionBarActivity{
         Log.i("Scan Clicked IG", "Send Server Invoked 1 ");
         Log.i("***FILE NAME", imageName);
 
+        final ProgressDialog progressDoalog;
+        progressDoalog = new ProgressDialog(MainActivity.this);
+        progressDoalog.setMax(100);
+        progressDoalog.setMessage("Its loading....");
+        progressDoalog.setTitle("ProgressDialog bar example");
+        progressDoalog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("upload", file.getName(), reqFile);
         RequestBody name = RequestBody.create(MediaType.parse("text/plain"), "upload_test");
 
         retrofit2.Call<okhttp3.ResponseBody> req = service.postImage(body, name);
-        Log.i("*****1","1111111");
+//        Log.i("*****1","1111111");
+
+        progressDoalog.show();
+
+//        call.enqueue(new Callback < JSONResponse > ()
+
         req.enqueue(new Callback<ResponseBody>(){
 //            Log.i("*****1","2");
             @Override
@@ -256,6 +269,7 @@ public class MainActivity extends ActionBarActivity{
                 ResponseBody rBody = response.body();
                 if(response.code()==200)
                 {
+                    progressDoalog.dismiss();
 //                String temp = response.toString();
 //                Log.i("Ye aya",temp);
                 String result="bakwaaaaaaaas";
@@ -312,6 +326,7 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 t.printStackTrace();
+                progressDoalog.dismiss();
                 if(isNetworkAvailable()==false)
                     Toast.makeText(getApplicationContext(),"Please connect to the internet",Toast.LENGTH_SHORT).show();
                 else
