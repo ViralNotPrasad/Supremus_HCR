@@ -291,10 +291,17 @@ public class MainActivity extends ActionBarActivity{
 //                test = (TextView)findViewById(R.id.textView);
 //                test.setText(result);
                 Log.i("HO GYA", "Coming from onRespCall");
-                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText("transcription",result);
-                clipboard.setPrimaryClip(clip);
-                Toast.makeText(getApplicationContext(),"Text has been copied to clipboard",Toast.LENGTH_SHORT).show();
+                if(result!="")
+                {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("transcription",result);
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getApplicationContext(),"Text has been copied to clipboard",Toast.LENGTH_SHORT).show();
+                }
+                else
+                    {
+                        Toast.makeText(getApplicationContext(),"Server has problems reading data :-(",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {
